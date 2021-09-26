@@ -2,11 +2,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using OrderPlacementAPI.Models;
+using OrderPlacementAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +19,12 @@ namespace OrderPlacementAPI
 {
     public class Startup
     {
+        public string ConnectionString { get; set; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ConnectionString = Configuration.GetConnectionString("DefaultConnectionString");
         }
 
         public IConfiguration Configuration { get; }
@@ -27,7 +33,11 @@ namespace OrderPlacementAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddDbContext<OrderPlacementContext>(opt => opt.UseSqlServer(ConnectionString));
+
             services.AddControllers();
+            services.AddTransient<OrderService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OrderPlacementAPI", Version = "v1" });
@@ -54,6 +64,8 @@ namespace OrderPlacementAPI
             {
                 endpoints.MapControllers();
             });
+
+            DbInitializer.Seed(app);
         }
     }
 }
