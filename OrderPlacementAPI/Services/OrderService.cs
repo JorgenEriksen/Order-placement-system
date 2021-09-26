@@ -16,15 +16,51 @@ namespace OrderPlacementAPI.Services
             _context = context;
         }
 
-        public OrderDetailsVM GetOrderDetails()
+        public List<OrderDetailsVM> GetOrderDetails()
         {
-            var _orderDetails = new OrderDetailsVM();
+            var _orders = _context.Order.ToList();
+            var _orderDetails = new List<OrderDetailsVM>();
+            foreach (Order order in _orders)
+            {
+                var _orderDetail = GetOrderDetailById(order.Id);
+                _orderDetails.Add(_orderDetail);
+            }
             return _orderDetails;
         }
 
-        public OrderDetailsVM GetOrderDetailById()
+        public OrderDetailsVM GetOrderDetailById(long orderId)
         {
-            var _orderDetails = new OrderDetailsVM();
+            var _order = _context.Order.FirstOrDefault(o => o.Id == orderId);
+            var _customer = _context.Customer.FirstOrDefault(c => c.Id == _order.CustomerId);
+            var _orderJobService = _context.OrderJobService.Where(ojs => ojs.Id == orderId).ToList();
+            var _fromAddress = _context.Address.FirstOrDefault(fa => fa.Id == _order.FromAddressId);
+            var _toAddress = _context.Address.FirstOrDefault(fa => fa.Id == _order.ToAddressId);
+            var JobServiceIds = new List<long>();
+
+            foreach (OrderJobService orderJobService in _orderJobService)
+            {
+                JobServiceIds.Add(orderJobService.JobServiceId);
+            }
+
+            var _orderDetails = new OrderDetailsVM()
+            {
+                Firstname = _customer.Firstname,
+                Lastname = _customer.Lastname,
+                Phone = _customer.Phone,
+                Email = _customer.Email,
+
+                FromStreet = _fromAddress.Street,
+                FromZipCode = _fromAddress.ZipCode,
+                FromCity = _fromAddress.City,
+                ToStreet = _toAddress.Street,
+                ToZipCode = _toAddress.ZipCode,
+                ToCity = _toAddress.City,
+                JobServices = JobServiceIds,
+
+                ServiceDate = _order.ServiceDate,
+                OrderNote = _order.OrderNote,
+            };
+
             return _orderDetails;
         }
 
@@ -64,7 +100,7 @@ namespace OrderPlacementAPI.Services
                 FromAddress = _newFromAddress,
                 ToAddress = _newToAddress,
                 ServiceDate = newOrder.ServiceDate,
-                OrderNote = newOrder.ServiceDate,
+                OrderNote = newOrder.OrderNote,
             };
             _context.Order.Add(_newOrder);
 

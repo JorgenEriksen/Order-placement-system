@@ -15,7 +15,6 @@ namespace OrderPlacementAPI.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             /*
             modelBuilder.Entity<Order>()
                 .HasOne(x => x.ToAddress)
@@ -29,9 +28,6 @@ namespace OrderPlacementAPI.Models
                 .HasForeignKey(x => x.FromAddressId)
                 .OnDelete(DeleteBehavior.SetNull);
             */
-
-
-
         }
 
         public DbSet<Customer> Customer { get; set; }

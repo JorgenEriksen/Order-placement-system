@@ -19,10 +19,23 @@ namespace OrderPlacementAPI.Controllers
             _orderService = orderService;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetOrderById(int id)
+        [HttpGet]
+        public IActionResult GetAllOrderDetails()
         {
-            return Ok();
+            var _allOrderDetails = _orderService.GetOrderDetails();
+            return Ok(_allOrderDetails);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetOrderDetailById(long id)
+        {
+            var _orderDetail = _orderService.GetOrderDetailById(id);
+            if (_orderDetail != null)
+            {
+                return Ok(_orderDetail);
+            }
+            return NotFound();
+
         }
 
         [HttpPost]

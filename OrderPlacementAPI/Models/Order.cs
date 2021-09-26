@@ -17,7 +17,6 @@ namespace OrderPlacementAPI.Models
         public string OrderNote { get; set; }
 
         public Address FromAddress { get; set; }
-
         public Address ToAddress { get; set; }
     }
 }
