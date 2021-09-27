@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
 import { getOrderByIdFromAPI } from "../../utils/apiRequests";
 import OrderForm from "../../components/OrderForm";
-import Button from "@mui/material/Button";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 import LinearProgress from "@mui/material/LinearProgress";
 
 const OrderDetail = () => {
@@ -19,19 +19,20 @@ const OrderDetail = () => {
     getOrderById();
   }, [params.id]);
 
+  const editOrder = () => {
+    console.log("from editOrder");
+  };
+
   return (
     <div>
-      <Button variant="contained" startIcon={<ArrowBackIcon />}>
-        All orders
-      </Button>
+      <h1>Edit order</h1>
+
       {isLoading ? (
         <>
-          <br />
-          <br />
-          <LinearProgress />
+          <LinearProgress style={{ marginTop: "10px" }} />
         </>
       ) : (
-        <OrderForm />
+        <OrderForm submitAction={editOrder} />
       )}
     </div>
   );

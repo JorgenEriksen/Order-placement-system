@@ -9,17 +9,15 @@ import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 
 const OrderList = ({ allOrders }) => {
-  const itemClick = () => {};
   return (
     <List>
       {allOrders.map((order, index) => {
         console.log(order);
         return (
           <ListItemButton
-            to="/order/1"
+            to={`/order/${order.id}`}
             component={Link}
             key={index}
-            onClick={() => {}}
             secondaryAction={
               <IconButton>
                 <CommentIcon />
@@ -27,7 +25,7 @@ const OrderList = ({ allOrders }) => {
             }
           >
             <ListItemText
-              primary={`${order.firstname} ${order.lastname} - ${order.serviceDate}`}
+              primary={`${order.firstName} ${order.lastName} - ${order.serviceDate}`}
               secondary={`placeholder`}
             />
           </ListItemButton>

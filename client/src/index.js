@@ -4,6 +4,7 @@ import "./index.css";
 import CardPage from "./components/CardPage";
 import OrdersOverview from "./containers/OrdersOverview";
 import OrderDetail from "./containers/OrderDetail";
+import NewOrder from "./containers/NewOrder";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
@@ -14,6 +15,9 @@ ReactDOM.render(
         <Switch>
           <Route exact path="/">
             <OrdersOverview />
+          </Route>
+          <Route path="/order/new">
+            <NewOrder />
           </Route>
           <Route path="/order/:id">
             <OrderDetail />
