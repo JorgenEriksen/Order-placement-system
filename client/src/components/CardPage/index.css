@@ -1,8 +1,8 @@
 .card-page-container{
     /* background-color: #F6F6F6; */
-    background-color: lightgray;
-    min-height: 100vh;
-    padding: 100px 10%;
+    
+    height: 100%;
+    padding: 100px 10%; 
 }
 
 .card-container{
@@ -18,5 +18,10 @@
 @media only screen and (max-width: 600px) {
     .card-page-container{
         padding: 0px 0%;
+        
+    }
+    .card-container{
+        height: 100%;
+    
     }
   }

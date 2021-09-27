@@ -65,7 +65,22 @@ const editOrderToAPI = async (orderData, orderId) => {
   if (response.ok) {
     return "";
   }
-  return "Error. Something went wrong when adding new order to API";
+  return "Error. Something went wrong when editing order to API";
+};
+
+const deleteOrderToAPI = async (orderId) => {
+  const url = `${process.env.REACT_APP_APIURL}/Order/${orderId}`;
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+  if (response.ok) {
+    return "";
+  }
+  return "Error. Something went wrong when deleting order to API";
 };
 
 export {
@@ -74,4 +89,5 @@ export {
   getAllOrdersFromAPI,
   addOrderToAPI,
   editOrderToAPI,
+  deleteOrderToAPI,
 };

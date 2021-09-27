@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ConfirmDialog from "../ConfirmDialog.js";
 import validateOrderForm from "../../utils/validateOrderForm";
 import { Link, useHistory } from "react-router-dom";
 import { getAllJobServicesFromAPI } from "../../utils/apiRequests";
@@ -12,12 +13,13 @@ import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import Alert from "@mui/material/Alert";
+import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
 
 import TextField from "@mui/material/TextField";
 import "./index.css";
 
-const OrderForm = ({ editMode, submitAction, orderData }) => {
+const OrderForm = ({ editMode, submitAction, orderData, deleteOrder }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState(0);
@@ -32,6 +34,7 @@ const OrderForm = ({ editMode, submitAction, orderData }) => {
   const [jobServicesInput, setJobServicesInput] = useState([]);
   const [orderNote, setOrderNote] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
 
   let history = useHistory();
 
@@ -115,14 +118,26 @@ const OrderForm = ({ editMode, submitAction, orderData }) => {
   };
   return (
     <>
-      <Button
-        component={Link}
-        to=""
-        variant="contained"
-        startIcon={<ArrowBackIcon />}
-      >
-        All orders
-      </Button>
+      <div className="top-buttons-container">
+        <Button
+          component={Link}
+          to="/"
+          variant="contained"
+          startIcon={<ArrowBackIcon />}
+        >
+          All orders
+        </Button>
+        {editMode && (
+          <Button
+            onClick={() => setOpenConfirmDialog(true)}
+            variant="contained"
+            color="error"
+            startIcon={<DeleteIcon />}
+          >
+            Delete Order
+          </Button>
+        )}
+      </div>
       <form className="form-container">
         <FormLabel className="form-title" component="legend">
           Customer information
@@ -297,7 +312,7 @@ const OrderForm = ({ editMode, submitAction, orderData }) => {
               className="width100"
               id="note"
               multiline
-              rows={4}
+              minRows={4}
               label="Order note"
               variant="outlined"
               value={orderNote}
@@ -329,10 +344,17 @@ const OrderForm = ({ editMode, submitAction, orderData }) => {
 
         <div className="form-button-container">
           <Button variant="contained" onClick={formSubmit}>
-            Submit
+            {editMode ? "Edit order" : "Create order"}
           </Button>
         </div>
       </form>
+      <ConfirmDialog
+        openConfirmDialog={openConfirmDialog}
+        setOpenConfirmDialog={setOpenConfirmDialog}
+        confirmFunction={deleteOrder}
+        dialogTitle="Delete Order"
+        dialogText="Are you sure you want to delete this order?"
+      />
     </>
   );
 };
@@ -341,6 +363,7 @@ OrderForm.propTypes = {
   editMode: PropTypes.bool,
   submitAction: PropTypes.func,
   orderData: PropTypes.array,
+  deleteOrder: PropTypes.func,
 };
 
 export default OrderForm;
