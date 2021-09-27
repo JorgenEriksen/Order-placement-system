@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import OrderList from "./components/OrderList";
-import { getAllOrdersFromAPI } from "../../utils/apiRequests";
+import {
+  getAllJobServicesFromAPI,
+  getAllOrdersFromAPI,
+} from "../../utils/apiRequests";
 
+import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
 
 const OrdersOverview = () => {
-  const [allOrders, setAllOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [jobServices, setJobServices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getAllOrders = async () => {
+      const allJobServicesPlaceholder = await getAllJobServicesFromAPI();
       const allOrdersPlaceholder = await getAllOrdersFromAPI();
-      setAllOrders(allOrdersPlaceholder);
+      setJobServices(allJobServicesPlaceholder);
+      setOrders(allOrdersPlaceholder);
       setIsLoading(false);
     };
 
@@ -24,7 +32,12 @@ const OrdersOverview = () => {
       {isLoading ? (
         <LinearProgress style={{ marginTop: "10px" }} />
       ) : (
-        <OrderList allOrders={allOrders} />
+        <>
+          <Button variant="contained" to={`/order/new`} component={Link}>
+            New Order
+          </Button>
+          <OrderList orders={orders} />
+        </>
       )}
     </>
   );

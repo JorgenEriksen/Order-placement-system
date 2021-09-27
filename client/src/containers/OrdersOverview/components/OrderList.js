@@ -8,10 +8,10 @@ import CommentIcon from "@mui/icons-material/Comment";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 
-const OrderList = ({ allOrders }) => {
+const OrderList = ({ orders }) => {
   return (
     <List>
-      {allOrders.map((order, index) => {
+      {orders.map((order, index) => {
         console.log(order);
         return (
           <ListItemButton
@@ -36,7 +36,7 @@ const OrderList = ({ allOrders }) => {
 };
 
 OrderList.propTypes = {
-  children: PropTypes.array,
+  orders: PropTypes.array,
 };
 
 export default OrderList;

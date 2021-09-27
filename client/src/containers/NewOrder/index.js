@@ -13,7 +13,7 @@ const NewOrder = () => {
   return (
     <div>
       <h1>New order</h1>
-      <OrderForm submitAction={addOrder} />
+      <OrderForm editMode={false} submitAction={addOrder} />
     </div>
   );
 };

@@ -14,7 +14,7 @@ const validateOrderForm = (formData) => {
   if (!validateEmail(formData.email)) {
     return "email is not valid";
   }
-  if (formData.date.length < 1) {
+  if (formData.serviceDate.length < 1) {
     return "date is not valid";
   }
   if (formData.fromStreet.length < 1) {

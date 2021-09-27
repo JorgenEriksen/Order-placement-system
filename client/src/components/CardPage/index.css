@@ -6,6 +6,8 @@
 }
 
 .card-container{
+    margin: 0 auto;
+    max-width: 1000px;
     background-color: white;
     border-radius: 10px;
     padding: 20px
@@ -15,6 +17,6 @@
 
 @media only screen and (max-width: 600px) {
     .card-page-container{
-        padding: 100px 0%;
+        padding: 0px 0%;
     }
   }

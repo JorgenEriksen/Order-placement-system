@@ -52,9 +52,26 @@ const addOrderToAPI = async (orderData) => {
   return "Error. Something went wrong when adding new order to API";
 };
 
+const editOrderToAPI = async (orderData, orderId) => {
+  const url = `${process.env.REACT_APP_APIURL}/Order/${orderId}`;
+  const response = await fetch(url, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(orderData),
+  });
+  if (response.ok) {
+    return "";
+  }
+  return "Error. Something went wrong when adding new order to API";
+};
+
 export {
   getAllJobServicesFromAPI,
   getOrderByIdFromAPI,
   getAllOrdersFromAPI,
   addOrderToAPI,
+  editOrderToAPI,
 };

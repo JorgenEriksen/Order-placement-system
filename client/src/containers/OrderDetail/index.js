@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { getOrderByIdFromAPI } from "../../utils/apiRequests";
+import { getOrderByIdFromAPI, editOrderToAPI } from "../../utils/apiRequests";
 import OrderForm from "../../components/OrderForm";
 
 import LinearProgress from "@mui/material/LinearProgress";
 
 const OrderDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [orderData, setOrderData] = useState(true);
   const params = useParams();
 
   useEffect(() => {
     const getOrderById = async () => {
-      const orderData = await getOrderByIdFromAPI(params.id);
+      const orderDataPlaceholder = await getOrderByIdFromAPI(params.id);
+      setOrderData(orderDataPlaceholder);
       setIsLoading(false);
-      console.log(orderData);
     };
     getOrderById();
   }, [params.id]);
 
-  const editOrder = () => {
+  const editOrder = async (formData) => {
     console.log("from editOrder");
+    const error = await editOrderToAPI(formData, params.id);
+    return error;
   };
 
   return (
@@ -32,7 +35,11 @@ const OrderDetail = () => {
           <LinearProgress style={{ marginTop: "10px" }} />
         </>
       ) : (
-        <OrderForm submitAction={editOrder} />
+        <OrderForm
+          editMode={true}
+          submitAction={editOrder}
+          orderData={orderData}
+        />
       )}
     </div>
   );

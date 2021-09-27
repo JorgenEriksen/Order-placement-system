@@ -17,29 +17,30 @@ import PropTypes from "prop-types";
 import TextField from "@mui/material/TextField";
 import "./index.css";
 
-const OrderForm = ({ submitAction }) => {
+const OrderForm = ({ editMode, submitAction, orderData }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState(0);
   const [email, setEmail] = useState("");
-  const [date, setDate] = useState("");
+  const [serviceDate, setServiceDate] = useState("");
   const [fromStreet, setFromStreet] = useState("");
   const [fromZipCode, setFromZipCode] = useState("");
   const [fromCity, setFromCity] = useState("");
   const [toStreet, setToStreet] = useState("");
   const [toZipCode, setToZipCode] = useState("");
   const [toCity, setToCity] = useState("");
+  const [jobServicesInput, setJobServicesInput] = useState([]);
   const [orderNote, setOrderNote] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [jobServicesInput, setJobServicesInput] = useState([]);
+
   let history = useHistory();
 
   useEffect(() => {
-    const getAllJobServices = async () => {
+    const getAllJobServicesAndPopulate = async () => {
       let jobServicesPlaceholder = await getAllJobServicesFromAPI();
       if (jobServicesPlaceholder) {
         jobServicesPlaceholder = jobServicesPlaceholder.map((e) => {
-          e.checked = false;
+          e.checked = orderData && orderData.jobServices.includes(e.id);
           return e;
         });
         setJobServicesInput(jobServicesPlaceholder);
@@ -48,8 +49,26 @@ const OrderForm = ({ submitAction }) => {
       }
     };
 
-    getAllJobServices();
+    if (editMode) {
+      populateForm();
+    }
+    getAllJobServicesAndPopulate();
   }, []);
+
+  const populateForm = () => {
+    setFirstName(orderData.firstName);
+    setLastName(orderData.lastName);
+    setPhone(orderData.phone);
+    setEmail(orderData.email);
+    setServiceDate(orderData.serviceDate);
+    setFromStreet(orderData.fromStreet);
+    setFromZipCode(orderData.fromZipCode);
+    setFromCity(orderData.fromCity);
+    setToStreet(orderData.toStreet);
+    setToZipCode(orderData.toZipCode);
+    setToCity(orderData.toCity);
+    setOrderNote(orderData.orderNote);
+  };
 
   const checkChange = (e, index) => {
     let jobServicesPlaceholder = [...jobServicesInput];
@@ -70,7 +89,7 @@ const OrderForm = ({ submitAction }) => {
       lastName,
       phone,
       email,
-      date,
+      serviceDate,
       fromStreet,
       fromZipCode,
       fromCity,
@@ -164,8 +183,11 @@ const OrderForm = ({ submitAction }) => {
               variant="outlined"
               type="date"
               InputLabelProps={{ shrink: true }}
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={serviceDate}
+              onChange={(e) => {
+                console.log(e.target.value);
+                setServiceDate(e.target.value);
+              }}
             />
           </div>
         </div>
@@ -258,6 +280,7 @@ const OrderForm = ({ submitAction }) => {
                 return (
                   <FormControlLabel
                     key={index}
+                    checked={singleJobService.checked}
                     onChange={(e) => checkChange(e, index)}
                     control={<Checkbox />}
                     label={singleJobService.serviceName}
@@ -315,7 +338,9 @@ const OrderForm = ({ submitAction }) => {
 };
 
 OrderForm.propTypes = {
+  editMode: PropTypes.bool,
   submitAction: PropTypes.func,
+  orderData: PropTypes.array,
 };
 
 export default OrderForm;
