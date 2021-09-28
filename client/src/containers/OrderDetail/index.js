@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useHistory } from "react-router-dom";
-
 import {
   getOrderByIdFromAPI,
   editOrderToAPI,
   deleteOrderToAPI,
 } from "../../utils/apiRequests";
 import OrderForm from "../../components/OrderForm";
+import { SnackbarContext } from "../../context/SnackbarContext";
 
 import LinearProgress from "@mui/material/LinearProgress";
 
 const OrderDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [orderData, setOrderData] = useState(true);
+  const { snack, setSnack } = useContext(SnackbarContext);
   const params = useParams();
   let history = useHistory();
 
@@ -26,15 +27,39 @@ const OrderDetail = () => {
   }, [params.id]);
 
   const editOrder = async (formData) => {
-    console.log("from editOrder");
     const error = await editOrderToAPI(formData, params.id);
-    return error;
+    if (error == "") {
+      setSnack({
+        open: true,
+        message: "Order is edited",
+        severity: "success",
+      });
+      history.push("/");
+    } else {
+      setSnack({
+        open: true,
+        message: error,
+        severity: "error",
+      });
+    }
   };
 
   const deleteOrder = async () => {
     const error = await deleteOrderToAPI(params.id);
-    history.push("/");
-    console.log("delete");
+    if (error == "") {
+      setSnack({
+        open: true,
+        message: "Order is deleted",
+        severity: "success",
+      });
+      history.push("/");
+    } else {
+      setSnack({
+        open: true,
+        message: error,
+        severity: "error",
+      });
+    }
   };
 
   return (

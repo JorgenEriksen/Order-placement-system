@@ -107,13 +107,7 @@ const OrderForm = ({ editMode, submitAction, orderData, deleteOrder }) => {
     if (errorMessage !== "") {
       setErrorMessage(errorMessage);
     } else {
-      console.log(formData);
-      errorMessage = await submitAction(formData);
-      if (errorMessage !== "") {
-        setErrorMessage("");
-      } else {
-        history.push("/");
-      }
+      await submitAction(formData);
     }
   };
   return (
