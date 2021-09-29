@@ -12,7 +12,6 @@ const OrderList = ({ orders }) => {
   return (
     <List>
       {orders.map((order, index) => {
-        console.log(order);
         return (
           <ListItemButton
             to={`/order/${order.id}`}
@@ -26,7 +25,7 @@ const OrderList = ({ orders }) => {
           >
             <ListItemText
               primary={`${order.firstName} ${order.lastName} - ${order.serviceDate}`}
-              secondary={`placeholder`}
+              secondary={order.phone}
             />
           </ListItemButton>
         );

@@ -193,10 +193,7 @@ const OrderForm = ({ editMode, submitAction, orderData, deleteOrder }) => {
               type="date"
               InputLabelProps={{ shrink: true }}
               value={serviceDate}
-              onChange={(e) => {
-                console.log(e.target.value);
-                setServiceDate(e.target.value);
-              }}
+              onChange={(e) => setServiceDate(e.target.value)}
             />
           </div>
         </div>

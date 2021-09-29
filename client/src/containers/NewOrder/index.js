@@ -9,10 +9,8 @@ const NewOrder = () => {
   let history = useHistory();
 
   const addOrder = async (formData) => {
-    console.log("from addOrder");
-    console.log(formData);
     const error = await addOrderToAPI(formData);
-    if (error == "") {
+    if (error === "") {
       setSnack({
         open: true,
         message: "Order created",

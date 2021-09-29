@@ -34,9 +34,21 @@ namespace OrderPlacementAPI
         {
 
             services.AddDbContext<OrderPlacementContext>(opt => opt.UseSqlServer(ConnectionString));
-
+            // CORS
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
             services.AddControllers();
             services.AddTransient<OrderService>();
+            services.AddTransient<JobServiceService>();
 
             services.AddSwaggerGen(c =>
             {
@@ -57,6 +69,8 @@ namespace OrderPlacementAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

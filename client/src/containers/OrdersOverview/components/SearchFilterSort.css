@@ -1,0 +1,13 @@
+.searchfiltersort-container{
+    margin-top: 20px;
+    display: flex;
+}
+
+#search-container{
+    flex: 1;
+    margin-right: 10px;
+}
+
+.search-mui {
+    width: 100%;
+}

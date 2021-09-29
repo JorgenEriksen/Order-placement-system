@@ -28,7 +28,7 @@ const OrderDetail = () => {
 
   const editOrder = async (formData) => {
     const error = await editOrderToAPI(formData, params.id);
-    if (error == "") {
+    if (error === "") {
       setSnack({
         open: true,
         message: "Order is edited",
@@ -46,7 +46,7 @@ const OrderDetail = () => {
 
   const deleteOrder = async () => {
     const error = await deleteOrderToAPI(params.id);
-    if (error == "") {
+    if (error === "") {
       setSnack({
         open: true,
         message: "Order is deleted",

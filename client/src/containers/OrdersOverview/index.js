@@ -1,21 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import OrderList from "./components/OrderList";
+import SearchFilterSort from "./components/SearchFilterSort";
 import { getAllOrdersFromAPI } from "../../utils/apiRequests";
+import { SnackbarContext } from "../../context/SnackbarContext";
 
 import Button from "@mui/material/Button";
 import LinearProgress from "@mui/material/LinearProgress";
 import AddIcon from "@mui/icons-material/Add";
 
 const OrdersOverview = () => {
+  const [allOrders, setAllOrders] = useState([]);
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { snack, setSnack } = useContext(SnackbarContext);
 
   useEffect(() => {
     const getAllOrders = async () => {
       const allOrdersPlaceholder = await getAllOrdersFromAPI();
-      setOrders(allOrdersPlaceholder);
-      setIsLoading(false);
+      if (allOrdersPlaceholder != null) {
+        setAllOrders(allOrdersPlaceholder);
+        setIsLoading(false);
+      } else {
+        setSnack({
+          open: true,
+          message: "Can't get orders from API. Try again later",
+          severity: "error",
+        });
+      }
     };
 
     getAllOrders();
@@ -35,7 +47,14 @@ const OrdersOverview = () => {
       {isLoading ? (
         <LinearProgress style={{ marginTop: "10px" }} />
       ) : (
-        <OrderList orders={orders} />
+        <>
+          <SearchFilterSort
+            allOrders={allOrders}
+            orders={orders}
+            setOrders={setOrders}
+          />
+          <OrderList orders={orders} />
+        </>
       )}
     </>
   );

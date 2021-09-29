@@ -39,13 +39,25 @@ namespace OrderPlacementAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddOrder(OrderDetailsVM addOrderVM)
+        public IActionResult AddOrder(OrderDetailsVM orderDetailsVM)
         {
-            System.Diagnostics.Debug.WriteLine("test0");
-            _orderService.AddOrder(addOrderVM);
+            _orderService.AddOrder(orderDetailsVM);
             return Ok();
         }
 
+        [HttpPut("{id}")]
+        public IActionResult EditOrder(OrderDetailsVM orderDetailsVM, long id)
+        {
+            _orderService.EditOrder(orderDetailsVM, id);
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteOrder(long id)
+        {
+            _orderService.DeleteOrder(id);
+            return Ok();
+        }
 
     }
 }

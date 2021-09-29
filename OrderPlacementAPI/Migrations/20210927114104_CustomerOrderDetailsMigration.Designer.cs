@@ -10,8 +10,8 @@ using OrderPlacementAPI.Models;
 namespace OrderPlacementAPI.Migrations
 {
     [DbContext(typeof(OrderPlacementContext))]
-    [Migration("20210926102143_MainMigration")]
-    partial class MainMigration
+    [Migration("20210927114104_CustomerOrderDetailsMigration")]
+    partial class CustomerOrderDetailsMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,10 +52,10 @@ namespace OrderPlacementAPI.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Firstname")
+                    b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Lastname")
+                    b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
